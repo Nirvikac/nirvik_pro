@@ -1,11 +1,297 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
 <head>
-  <title>Nirvik Acharya</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nirvik Acharya – Flutter & Full Stack Developer</title>
+<style>
+:root{--bg:#fff;--bg2:#f8f7f4;--bg3:#f1efe8;--text:#1a1a1a;--text2:#5f5e5a;--text3:#888780;--bdr:rgba(0,0,0,.12);--bdr2:rgba(0,0,0,.25);--blue:#185FA5;--blue-bg:#E6F1FB;--purple:#534AB7;--purple-bg:#EEEDFE;--teal:#0F6E56;--teal-bg:#E1F5EE;--green:#3B6D11;--green-bg:#EAF3DE;--amber:#BA7517;--amber-bg:#FAEEDA;--r:12px;--rs:8px}
+[data-theme=dark]{--bg:#1a1a1a;--bg2:#222221;--bg3:#2c2c2a;--text:#f0ede6;--text2:#b4b2a9;--text3:#888780;--bdr:rgba(255,255,255,.1);--bdr2:rgba(255,255,255,.22);--blue:#85B7EB;--blue-bg:#042C53;--purple:#AFA9EC;--purple-bg:#26215C;--teal:#5DCAA5;--teal-bg:#04342C;--green:#97C459;--green-bg:#173404;--amber:#EF9F27;--amber-bg:#412402}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s;line-height:1.6}
+nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:.5px solid var(--bdr);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:background .3s}
+.nl{font-size:17px;font-weight:600;letter-spacing:-.3px}
+.nr{display:flex;gap:1.5rem;align-items:center}
+.nr a{font-size:14px;color:var(--text2);text-decoration:none;transition:color .2s}
+.nr a:hover{color:var(--text)}
+.tbtn{background:var(--bg3);border:.5px solid var(--bdr);border-radius:20px;padding:5px 14px;font-size:13px;cursor:pointer;color:var(--text2);transition:all .2s}
+.tbtn:hover{background:var(--bg2)}
+
+.hero{max-width:960px;margin:0 auto;padding:5rem 2rem 4rem;display:grid;grid-template-columns:1fr 300px;gap:4rem;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);color:var(--green);font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:1.2rem}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.hero h1{font-size:42px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:1rem}
+.ac{color:var(--blue)}
+.hs{font-size:16px;color:var(--text2);line-height:1.8;margin-bottom:2rem;max-width:420px}
+.hb{display:flex;gap:12px;flex-wrap:wrap}
+.bp{background:var(--text);color:var(--bg);border:none;padding:12px 26px;border-radius:var(--rs);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .2s}
+.bp:hover{opacity:.85;transform:translateY(-1px)}
+.bo{background:transparent;color:var(--text);border:.5px solid var(--bdr2);padding:12px 26px;border-radius:var(--rs);font-size:14px;cursor:pointer;transition:background .2s,transform .2s}
+.bo:hover{background:var(--bg2);transform:translateY(-1px)}
+
+.pcard{background:var(--bg2);border:.5px solid var(--bdr);border-radius:20px;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden;transition:background .3s}
+.pbg{position:absolute;top:0;left:0;right:0;height:90px;background:linear-gradient(135deg,var(--blue-bg),var(--purple-bg));opacity:.6;pointer-events:none}
+.pw{position:relative;z-index:1;width:110px;height:110px;margin:0 auto 1rem}
+.pimg{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:center;border:3px solid var(--bg);display:block}
+.pph{width:110px;height:110px;border-radius:50%;background:var(--blue);color:#fff;font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center;border:3px solid var(--bg)}
+.pname{font-size:16px;font-weight:600;margin-bottom:3px}
+.prole{font-size:13px;color:var(--text2);margin-bottom:1rem}
+.chs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:.8rem}
+.ch{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.cb{background:var(--blue-bg);color:var(--blue)}
+.cp{background:var(--purple-bg);color:var(--purple)}
+.ct{background:var(--teal-bg);color:var(--teal)}
+.ploc{font-size:12px;color:var(--text3)}
+
+section{padding:4rem 2rem;max-width:960px;margin:0 auto}
+hr{border:none;border-top:.5px solid var(--bdr)}
+.sl{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.st{font-size:26px;font-weight:700;letter-spacing:-.4px;margin-bottom:2rem}
+
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
+.at{font-size:15px;color:var(--text2);line-height:1.8}
+.at p+p{margin-top:1rem}
+.ss{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sc{background:var(--bg2);border:.5px solid var(--bdr);border-radius:var(--rs);padding:1rem 1.25rem;transition:background .3s}
+.snum{font-size:28px;font-weight:700;letter-spacing:-1px}
+.slb{font-size:12px;color:var(--text2);margin-top:2px}
+
+.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+.kc{background:var(--bg);border:.5px solid var(--bdr);border-radius:var(--r);padding:1.25rem;transition:border-color .2s,transform .2s,box-shadow .2s}
+.kc:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.ki{width:42px;height:42px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
+.kn{font-size:14px;font-weight:600;margin-bottom:4px}
+.kd{font-size:12px;color:var(--text2);line-height:1.5}
+.kb{margin-top:10px;height:3px;background:var(--bdr);border-radius:3px;overflow:hidden}
+.kbf{height:100%;border-radius:3px;width:0;transition:width 1.2s ease}
+
+.prg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.prc{background:var(--bg);border:.5px solid var(--bdr);border-radius:var(--r);padding:1.5rem;transition:all .2s;cursor:default}
+.prc:hover{border-color:var(--bdr2);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
+.prt{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.prtt{font-size:15px;font-weight:600}
+.prd{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px}
+.prs{display:flex;gap:6px;flex-wrap:wrap}
+.pi2{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--bg3);color:var(--text2);border:.5px solid var(--bdr)}
+.prl{margin-top:14px;display:flex;gap:8px}
+.pra{font-size:12px;color:var(--blue);text-decoration:none;padding:4px 10px;border:.5px solid var(--bdr);border-radius:var(--rs);transition:background .2s}
+.pra:hover{background:var(--blue-bg)}
+
+.cx{background:var(--bg2);border:.5px solid var(--bdr);border-radius:var(--r);padding:3rem 2rem;text-align:center;transition:background .3s}
+.cx h2{font-size:26px;font-weight:700;margin-bottom:8px}
+.cx p{font-size:15px;color:var(--text2);margin-bottom:2rem}
+.cbtns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.cl{display:flex;align-items:center;gap:8px;background:var(--bg);border:.5px solid var(--bdr);border-radius:var(--rs);padding:11px 20px;font-size:14px;color:var(--text);text-decoration:none;cursor:pointer;transition:all .2s}
+.cl:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.07)}
+
+footer{text-align:center;padding:2rem;font-size:12px;color:var(--text3);border-top:.5px solid var(--bdr)}
+footer strong{color:var(--text2)}
+
+.fi{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.fi.v{opacity:1;transform:translateY(0)}
+
+@media(max-width:680px){
+  .hero{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem 2rem}
+  .hero h1{font-size:30px}
+  .pcard{max-width:280px;margin:0 auto}
+  .ag{grid-template-columns:1fr}
+  section{padding:3rem 1.5rem}
+  nav{padding:1rem 1.5rem}
+  .nr a:not(.tbtn){display:none}
+}
+</style>
 </head>
-<body style="font-family: Arial; text-align:center; margin-top:100px;">
-  <h1>Hello, I'm Nirvik 👋</h1>
-  <p>My website is live 🚀</p>
-  <p>More coming soon...</p>
+<body>
+
+<nav>
+  <span class="nl">Nirvik Acharya</span>
+  <div class="nr">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+    <button class="tbtn" onclick="tg()" id="tbtn">🌙 Dark</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="fi">
+    <div class="badge"><span class="dot"></span> Available for work</div>
+    <h1>Flutter &amp; <span class="ac">Full Stack</span><br>Developer</h1>
+    <p class="hs">I build beautiful cross-platform mobile apps with Flutter and scalable backends with Node.js, Express &amp; MongoDB. Based in Kathmandu, Nepal.</p>
+    <div class="hb">
+      <button class="bp" onclick="sc('projects')">View Projects &rarr;</button>
+      <button class="bo" onclick="sc('contact')">Get in Touch</button>
+    </div>
+  </div>
+  <div class="fi" style="transition-delay:.15s">
+    <div class="pcard">
+      <div class="pbg"></div>
+      <div class="pw">
+        <div class="pph" id="pp" style="display:none">NA</div>
+        <img class="pimg" id="pi" src="nirvikphoto.jpg" alt="Nirvik Acharya" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='nirvik-photo.svg';return;} this.style.display='none';document.getElementById('pp').style.display='flex';">
+      </div>
+      <div class="pname">Nirvik Acharya</div>
+      <div class="prole">Flutter &middot; Node.js &middot; MongoDB</div>
+      <div class="chs">
+        <span class="ch cb">Flutter</span>
+        <span class="ch cp">Node.js</span>
+        <span class="ch ct">MongoDB</span>
+      </div>
+      <div class="ploc">&#128205; Kathmandu, Nepal</div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sl fi">About Me</div>
+  <div class="st fi">Building for mobile &amp; web</div>
+  <div class="ag">
+    <div class="at fi">
+      <p>I'm Nirvik Acharya, a passionate full-stack developer from Kathmandu, Nepal. I specialise in high-quality mobile applications with Flutter and Dart, and scalable backend systems with Node.js, Express, and MongoDB.</p>
+      <p>I love turning ideas into real products — from architecting REST APIs and database schemas to crafting smooth, beautiful mobile UI experiences. I'm always learning and enjoy tackling challenging problems.</p>
+      <p>When I'm not coding, I'm exploring the mountains of Nepal or contributing to open source projects.</p>
+    </div>
+    <div class="ss">
+      <div class="sc fi" style="transition-delay:.05s"><div class="snum" style="color:var(--blue)">3+</div><div class="slb">Years Experience</div></div>
+      <div class="sc fi" style="transition-delay:.1s"><div class="snum" style="color:var(--purple)">20+</div><div class="slb">Projects Built</div></div>
+      <div class="sc fi" style="transition-delay:.15s"><div class="snum" style="color:var(--teal)">10+</div><div class="slb">Happy Clients</div></div>
+      <div class="sc fi" style="transition-delay:.2s"><div class="snum" style="color:var(--amber)">&#8734;</div><div class="slb">Cups of Chai &#9749;</div></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sl fi">What I work with</div>
+  <div class="st fi">Skills &amp; Technologies</div>
+  <div class="kg">
+    <div class="kc fi" style="transition-delay:.05s">
+      <div class="ki" style="background:var(--blue-bg)">&#128241;</div>
+      <div class="kn">Flutter</div><div class="kd">Cross-platform iOS &amp; Android</div>
+      <div class="kb"><div class="kbf" style="background:var(--blue)" data-w="92%"></div></div>
+    </div>
+    <div class="kc fi" style="transition-delay:.1s">
+      <div class="ki" style="background:var(--green-bg)">&#128994;</div>
+      <div class="kn">Node.js</div><div class="kd">Server-side JavaScript runtime</div>
+      <div class="kb"><div class="kbf" style="background:var(--green)" data-w="88%"></div></div>
+    </div>
+    <div class="kc fi" style="transition-delay:.15s">
+      <div class="ki" style="background:var(--purple-bg)">&#128642;</div>
+      <div class="kn">Express.js</div><div class="kd">REST API &amp; web framework</div>
+      <div class="kb"><div class="kbf" style="background:var(--purple)" data-w="85%"></div></div>
+    </div>
+    <div class="kc fi" style="transition-delay:.2s">
+      <div class="ki" style="background:var(--teal-bg)">&#127807;</div>
+      <div class="kn">MongoDB</div><div class="kd">NoSQL database &amp; Mongoose</div>
+      <div class="kb"><div class="kbf" style="background:var(--teal)" data-w="83%"></div></div>
+    </div>
+    <div class="kc fi" style="transition-delay:.25s">
+      <div class="ki" style="background:var(--blue-bg)">&#127919;</div>
+      <div class="kn">Dart</div><div class="kd">Flutter's native language</div>
+      <div class="kb"><div class="kbf" style="background:var(--blue)" data-w="90%"></div></div>
+    </div>
+    <div class="kc fi" style="transition-delay:.3s">
+      <div class="ki" style="background:var(--amber-bg)">&#128279;</div>
+      <div class="kn">REST APIs</div><div class="kd">Design, auth &amp; integration</div>
+      <div class="kb"><div class="kbf" style="background:var(--amber)" data-w="87%"></div></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sl fi">What I've built</div>
+  <div class="st fi">Featured Projects</div>
+  <div class="prg">
+    <div class="prc fi" style="transition-delay:.05s">
+      <div class="prt"><div class="prtt">E-Commerce App</div><span class="ch cb">Mobile</span></div>
+      <p class="prd">Full-featured shopping app with product listings, cart, payment gateway integration, and real-time order tracking.</p>
+      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Dart</span><span class="pi2">Node.js</span><span class="pi2">MongoDB</span></div>
+      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a><a class="pra" href="#">Live Demo &rarr;</a></div>
+    </div>
+    <div class="prc fi" style="transition-delay:.1s">
+      <div class="prt"><div class="prtt">Task Manager API</div><span class="ch ct">Backend</span></div>
+      <p class="prd">RESTful API with JWT authentication, role-based access control, team workspaces, and full CRUD with pagination.</p>
+      <div class="prs"><span class="pi2">Express.js</span><span class="pi2">MongoDB</span><span class="pi2">JWT</span><span class="pi2">Mongoose</span></div>
+      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
+    </div>
+    <div class="prc fi" style="transition-delay:.15s">
+      <div class="prt"><div class="prtt">Real-Time Chat App</div><span class="ch cp">Full Stack</span></div>
+      <p class="prd">Messaging app with WebSocket support via Socket.io, group chats, media sharing, and push notifications.</p>
+      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Socket.io</span><span class="pi2">Node.js</span><span class="pi2">MongoDB</span></div>
+      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
+    </div>
+    <div class="prc fi" style="transition-delay:.2s">
+      <div class="prt"><div class="prtt">Food Delivery App</div><span class="ch cb">Mobile</span></div>
+      <p class="prd">Multi-restaurant ordering app with live driver tracking, reviews, promo codes, and Google Maps integration.</p>
+      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Node.js</span><span class="pi2">Express</span><span class="pi2">Maps API</span></div>
+      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
+    </div>
+    <div class="prc fi" style="transition-delay:.25s">
+      <div class="prt"><div class="prtt">Blog Platform</div><span class="ch ct">Full Stack</span></div>
+      <p class="prd">CMS-powered blogging platform with markdown editor, SEO optimization, comment system, and admin dashboard.</p>
+      <div class="prs"><span class="pi2">Node.js</span><span class="pi2">Express</span><span class="pi2">MongoDB</span><span class="pi2">REST API</span></div>
+      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
+    </div>
+    <div class="prc fi" style="transition-delay:.3s">
+      <div class="prt"><div class="prtt">Fitness Tracker</div><span class="ch cp">Mobile</span></div>
+      <p class="prd">Workout logging app with custom exercise creation, progress charts, streak tracking, and daily reminders.</p>
+      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Dart</span><span class="pi2">Node.js</span><span class="pi2">Charts</span></div>
+      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="cx fi">
+    <h2>Let's build something together</h2>
+    <p>Open to freelance projects, full-time roles, and exciting collaborations.</p>
+    <div class="cbtns">
+      <a class="cl" href="mailto:nirvik640@gmail.com">&#9993;&#65039; nirvik640@gmail.com</a>
+      <a class="cl" href="https://www.linkedin.com/in/nirvikweb/" target="_blank" rel="noreferrer">&#128188; LinkedIn</a>
+      <a class="cl" href="https://github.com/Nirvikac" target="_blank" rel="noreferrer">&#128025; GitHub</a>
+      <a class="cl" href="https://www.instagram.com/nirvik.web/" target="_blank" rel="noreferrer">&#128247; Instagram</a>
+      <a class="cl" href="#" onclick="alert('Add your CV PDF link here — replace this href with the path to your CV file.');return false">&#128196; Download CV</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Designed &amp; built by <strong>Nirvik Acharya</strong> &middot; Kathmandu, Nepal &middot; &copy; 2026</p>
+  <p style="margin-top:6px">Flutter &middot; Node.js &middot; Express &middot; MongoDB</p>
+</footer>
+
+<script>
+function tg(){
+  var h=document.documentElement,b=document.getElementById('tbtn');
+  h.dataset.theme=h.dataset.theme==='light'?'dark':'light';
+  b.textContent=h.dataset.theme==='dark'?'☀️ Light':'🌙 Dark';
+}
+function sc(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('v');
+      e.target.querySelectorAll('.kbf').forEach(function(b){b.style.width=b.dataset.w;});
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.fi').forEach(function(el){obs.observe(el);});
+setTimeout(function(){document.querySelectorAll('.hero .fi').forEach(function(el){el.classList.add('v');});},80);
+</script>
 </body>
 </html>
