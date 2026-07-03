@@ -1,299 +1,603 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nirvik Acharya | Official Website</title>
-<meta name="description"
-content="Official website of Nirvik Acharya. Portfolio, projects, blogs and contact information.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nirvik Acharya — Drive-through Portfolio</title>
 <style>
-:root{--bg:#fff;--bg2:#f8f7f4;--bg3:#f1efe8;--text:#1a1a1a;--text2:#5f5e5a;--text3:#888780;--bdr:rgba(0,0,0,.12);--bdr2:rgba(0,0,0,.25);--blue:#185FA5;--blue-bg:#E6F1FB;--purple:#534AB7;--purple-bg:#EEEDFE;--teal:#0F6E56;--teal-bg:#E1F5EE;--green:#3B6D11;--green-bg:#EAF3DE;--amber:#BA7517;--amber-bg:#FAEEDA;--r:12px;--rs:8px}
-[data-theme=dark]{--bg:#1a1a1a;--bg2:#222221;--bg3:#2c2c2a;--text:#f0ede6;--text2:#b4b2a9;--text3:#888780;--bdr:rgba(255,255,255,.1);--bdr2:rgba(255,255,255,.22);--blue:#85B7EB;--blue-bg:#042C53;--purple:#AFA9EC;--purple-bg:#26215C;--teal:#5DCAA5;--teal-bg:#04342C;--green:#97C459;--green-bg:#173404;--amber:#EF9F27;--amber-bg:#412402}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);transition:background .3s,color .3s;line-height:1.6}
-nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:.5px solid var(--bdr);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:background .3s}
-.nl{font-size:17px;font-weight:600;letter-spacing:-.3px}
-.nr{display:flex;gap:1.5rem;align-items:center}
-.nr a{font-size:14px;color:var(--text2);text-decoration:none;transition:color .2s}
-.nr a:hover{color:var(--text)}
-.tbtn{background:var(--bg3);border:.5px solid var(--bdr);border-radius:20px;padding:5px 14px;font-size:13px;cursor:pointer;color:var(--text2);transition:all .2s}
-.tbtn:hover{background:var(--bg2)}
+  :root{
+    --accent:#2FE6D8;
+    --accent-warm:#FFB648;
+    --bg:#070B14;
+    --panel:#0F1626;
+    --text:#EAF0FA;
+    --text-muted:#93A1BC;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  @font-face{font-family:'Space Grotesk';src:local('Space Grotesk');}
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:var(--font-body); }
+  #canvas-wrap{ position:fixed; inset:0; }
+  canvas{ display:block; }
 
-.hero{max-width:960px;margin:0 auto;padding:5rem 2rem 4rem;display:grid;grid-template-columns:1fr 300px;gap:4rem;align-items:center}
-.badge{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);color:var(--green);font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;margin-bottom:1.2rem}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
-.hero h1{font-size:42px;font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:1rem}
-.ac{color:var(--blue)}
-.hs{font-size:16px;color:var(--text2);line-height:1.8;margin-bottom:2rem;max-width:420px}
-.hb{display:flex;gap:12px;flex-wrap:wrap}
-.bp{background:var(--text);color:var(--bg);border:none;padding:12px 26px;border-radius:var(--rs);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .2s}
-.bp:hover{opacity:.85;transform:translateY(-1px)}
-.bo{background:transparent;color:var(--text);border:.5px solid var(--bdr2);padding:12px 26px;border-radius:var(--rs);font-size:14px;cursor:pointer;transition:background .2s,transform .2s}
-.bo:hover{background:var(--bg2);transform:translateY(-1px)}
+  #loader{
+    position:fixed; inset:0; background:var(--bg); z-index:50;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    color:var(--text); transition:opacity .6s ease;
+  }
+  #loader .mark{ font-family:var(--font-display); font-weight:700; font-size:22px; letter-spacing:0.02em; }
+  #loader .mark span{ color:var(--accent); }
+  #loader .bar{ width:220px; height:3px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:22px; overflow:hidden; }
+  #loader .bar i{ display:block; height:100%; width:0%; background:var(--accent); box-shadow:0 0 12px var(--accent); transition:width .2s ease; }
+  #loader .hint{ margin-top:14px; font-family:var(--font-mono); font-size:11px; color:var(--text-muted); letter-spacing:0.06em; }
 
-.pcard{background:var(--bg2);border:.5px solid var(--bdr);border-radius:20px;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden;transition:background .3s}
-.pbg{position:absolute;top:0;left:0;right:0;height:90px;background:linear-gradient(135deg,var(--blue-bg),var(--purple-bg));opacity:.6;pointer-events:none}
-.pw{position:relative;z-index:1;width:110px;height:110px;margin:0 auto 1rem}
-.pimg{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:center;border:3px solid var(--bg);display:block}
-.pph{width:110px;height:110px;border-radius:50%;background:var(--blue);color:#fff;font-size:30px;font-weight:700;display:flex;align-items:center;justify-content:center;border:3px solid var(--bg)}
-.pname{font-size:16px;font-weight:600;margin-bottom:3px}
-.prole{font-size:13px;color:var(--text2);margin-bottom:1rem}
-.chs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:.8rem}
-.ch{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
-.cb{background:var(--blue-bg);color:var(--blue)}
-.cp{background:var(--purple-bg);color:var(--purple)}
-.ct{background:var(--teal-bg);color:var(--teal)}
-.ploc{font-size:12px;color:var(--text3)}
+  /* HUD */
+  .hud{
+    position:fixed; z-index:20; pointer-events:none;
+    font-family:var(--font-body);
+  }
+  .hud-top{
+    top:18px; left:18px; right:18px;
+    display:flex; justify-content:space-between; align-items:flex-start;
+  }
+  .brand{
+    font-family:var(--font-display); font-weight:700; font-size:16px; color:var(--text);
+    background:rgba(15,22,38,0.72); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.08); padding:10px 16px; border-radius:14px;
+  }
+  .brand span{ color:var(--accent); }
+  .instructions{
+    background:rgba(15,22,38,0.72); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.08); border-radius:14px;
+    padding:10px 16px; font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+    text-align:right; line-height:1.6;
+  }
+  .instructions b{ color:var(--accent); }
 
-section{padding:4rem 2rem;max-width:960px;margin:0 auto}
-hr{border:none;border-top:.5px solid var(--bdr)}
-.sl{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.st{font-size:26px;font-weight:700;letter-spacing:-.4px;margin-bottom:2rem}
+  .compass{
+    position:fixed; bottom:24px; left:18px; z-index:20;
+    width:96px; height:96px; border-radius:50%;
+    background:rgba(15,22,38,0.72); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.1);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .compass-inner{ position:relative; width:76px; height:76px; }
+  .compass-dot{
+    position:absolute; width:8px; height:8px; border-radius:50%;
+    background:var(--accent-warm); box-shadow:0 0 8px var(--accent-warm);
+    transform: translate(-50%,-50%);
+  }
+  .compass-dot.home{ background:var(--text); }
+  .compass-car{
+    position:absolute; top:50%; left:50%; width:0; height:0;
+    border-left:5px solid transparent; border-right:5px solid transparent;
+    border-bottom:10px solid var(--accent); transform:translate(-50%,-50%);
+  }
 
-.ag{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start}
-.at{font-size:15px;color:var(--text2);line-height:1.8}
-.at p+p{margin-top:1rem}
-.ss{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sc{background:var(--bg2);border:.5px solid var(--bdr);border-radius:var(--rs);padding:1rem 1.25rem;transition:background .3s}
-.snum{font-size:28px;font-weight:700;letter-spacing:-1px}
-.slb{font-size:12px;color:var(--text2);margin-top:2px}
+  .speed{
+    position:fixed; bottom:24px; right:18px; z-index:20;
+    background:rgba(15,22,38,0.72); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.08); border-radius:14px;
+    padding:12px 18px; text-align:center; font-family:var(--font-display);
+  }
+  .speed .val{ font-size:22px; font-weight:700; color:var(--text); }
+  .speed .lbl{ font-family:var(--font-mono); font-size:9px; color:var(--text-muted); letter-spacing:0.1em; margin-top:2px; }
 
-.kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
-.kc{background:var(--bg);border:.5px solid var(--bdr);border-radius:var(--r);padding:1.25rem;transition:border-color .2s,transform .2s,box-shadow .2s}
-.kc:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
-.ki{width:42px;height:42px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px}
-.kn{font-size:14px;font-weight:600;margin-bottom:4px}
-.kd{font-size:12px;color:var(--text2);line-height:1.5}
-.kb{margin-top:10px;height:3px;background:var(--bdr);border-radius:3px;overflow:hidden}
-.kbf{height:100%;border-radius:3px;width:0;transition:width 1.2s ease}
+  /* touch controls */
+  .touch-controls{
+    position:fixed; z-index:25; display:none;
+    bottom:24px; left:50%; transform:translateX(-50%);
+    grid-template-columns:repeat(3,56px); grid-template-rows:repeat(2,56px); gap:8px;
+  }
+  .touch-controls.active{ display:grid; }
+  .tbtn{
+    background:rgba(15,22,38,0.8); border:1px solid rgba(255,255,255,0.12);
+    border-radius:14px; color:var(--text); font-size:20px;
+    display:flex; align-items:center; justify-content:center; user-select:none;
+  }
+  .tbtn:active{ background:rgba(47,230,216,0.25); border-color:var(--accent); }
+  #btn-up{ grid-column:2; grid-row:1; } #btn-left{ grid-column:1; grid-row:2; }
+  #btn-down{ grid-column:2; grid-row:2; } #btn-right{ grid-column:3; grid-row:2; }
 
-.prg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.prc{background:var(--bg);border:.5px solid var(--bdr);border-radius:var(--r);padding:1.5rem;transition:all .2s;cursor:default}
-.prc:hover{border-color:var(--bdr2);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
-.prt{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-.prtt{font-size:15px;font-weight:600}
-.prd{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:14px}
-.prs{display:flex;gap:6px;flex-wrap:wrap}
-.pi2{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--bg3);color:var(--text2);border:.5px solid var(--bdr)}
-.prl{margin-top:14px;display:flex;gap:8px}
-.pra{font-size:12px;color:var(--blue);text-decoration:none;padding:4px 10px;border:.5px solid var(--bdr);border-radius:var(--rs);transition:background .2s}
-.pra:hover{background:var(--blue-bg)}
-
-.cx{background:var(--bg2);border:.5px solid var(--bdr);border-radius:var(--r);padding:3rem 2rem;text-align:center;transition:background .3s}
-.cx h2{font-size:26px;font-weight:700;margin-bottom:8px}
-.cx p{font-size:15px;color:var(--text2);margin-bottom:2rem}
-.cbtns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.cl{display:flex;align-items:center;gap:8px;background:var(--bg);border:.5px solid var(--bdr);border-radius:var(--rs);padding:11px 20px;font-size:14px;color:var(--text);text-decoration:none;cursor:pointer;transition:all .2s}
-.cl:hover{border-color:var(--bdr2);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.07)}
-
-footer{text-align:center;padding:2rem;font-size:12px;color:var(--text3);border-top:.5px solid var(--bdr)}
-footer strong{color:var(--text2)}
-
-.fi{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
-.fi.v{opacity:1;transform:translateY(0)}
-
-@media(max-width:680px){
-  .hero{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem 2rem}
-  .hero h1{font-size:30px}
-  .pcard{max-width:280px;margin:0 auto}
-  .ag{grid-template-columns:1fr}
-  section{padding:3rem 1.5rem}
-  nav{padding:1rem 1.5rem}
-  .nr a:not(.tbtn){display:none}
-}
+  /* info panel */
+  .panel{
+    position:fixed; z-index:30;
+    left:50%; bottom:0; transform:translate(-50%,110%);
+    width:min(560px,92vw); max-height:66vh; overflow-y:auto;
+    background:var(--panel); border:1px solid rgba(255,255,255,0.1);
+    border-bottom:none; border-radius:22px 22px 0 0;
+    padding:26px 26px 32px;
+    transition:transform .45s cubic-bezier(.19,1,.22,1);
+    box-shadow:0 -30px 80px -20px rgba(0,0,0,0.6);
+  }
+  .panel.open{ transform:translate(-50%,0%); }
+  .panel .eyebrow{ font-family:var(--font-mono); font-size:10.5px; color:var(--accent-warm); letter-spacing:0.12em; text-transform:uppercase; }
+  .panel h2{ font-family:var(--font-display); font-size:24px; color:var(--text); margin-top:6px; }
+  .panel .body{ color:var(--text-muted); font-size:13.5px; line-height:1.7; margin-top:14px; }
+  .panel .close{
+    position:absolute; top:14px; right:18px; width:30px; height:30px; border-radius:50%;
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text);
+    font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .stat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; }
+  .stat-card{ background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px; }
+  .stat-card .num{ font-family:var(--font-display); font-size:20px; font-weight:700; color:var(--accent); }
+  .stat-card .lbl{ font-size:10.5px; color:var(--text-muted); margin-top:2px; }
+  .skill-list{ display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .skill-row{ display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:10px 12px; }
+  .skill-row .ic{ width:28px; height:28px; border-radius:8px; background:rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+  .skill-row b{ font-size:13px; display:block; } .skill-row span{ font-size:10.5px; color:var(--text-muted); }
+  .proj-card{ background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:14px; margin-top:10px; }
+  .proj-card h3{ font-family:var(--font-display); font-size:14.5px; }
+  .proj-card p{ font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.55; }
+  .proj-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .proj-tags span{ font-family:var(--font-mono); font-size:9.5px; color:var(--accent); background:rgba(47,230,216,0.12); padding:3px 7px; border-radius:6px; }
+  .contact-links{ display:flex; flex-direction:column; gap:8px; margin-top:16px; }
+  .contact-links a{ display:flex; justify-content:space-between; align-items:center; text-decoration:none; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); color:var(--text); padding:12px 14px; border-radius:10px; font-size:13px; }
+  .contact-links a span{ color:var(--text-muted); }
+  .prompt{
+    position:fixed; z-index:15; top:50%; left:50%; transform:translate(-50%,-140%);
+    font-family:var(--font-mono); font-size:11px; color:var(--text); letter-spacing:0.06em;
+    background:rgba(15,22,38,0.72); backdrop-filter:blur(10px); padding:8px 14px; border-radius:999px;
+    border:1px solid rgba(255,255,255,0.1); opacity:0; transition:opacity .3s ease; pointer-events:none;
+  }
+  .prompt.show{ opacity:1; }
 </style>
 </head>
 <body>
 
-<nav>
-  <span class="nl">Nirvik Acharya</span>
-  <div class="nr">
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-    <button class="tbtn" onclick="tg()" id="tbtn">🌙 Dark</button>
-  </div>
-</nav>
+<div id="loader">
+  <div class="mark">NIRVIK<span>.DRIVE</span></div>
+  <div class="bar"><i id="loadbar"></i></div>
+  <div class="hint">loading world…</div>
+</div>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="fi">
-    <div class="badge"><span class="dot"></span> Fuck You </div>
-    <h1>Flutter &amp; <span class="ac">Full Stack</span><br>Developer</h1>
-    <p class="hs">I build beautiful cross-platform mobile apps with Flutter and scalable backends with Node.js, Express &amp; MongoDB. Based in Kathmandu, Nepal.</p>
-    <div class="hb">
-      <button class="bp" onclick="sc('projects')">View Projects &rarr;</button>
-      <button class="bo" onclick="sc('contact')">Get in Touch</button>
-    </div>
-  </div>
-  <div class="fi" style="transition-delay:.15s">
-    <div class="pcard">
-      <div class="pbg"></div>
-      <div class="pw">
-        <div class="pph" id="pp" style="display:none">NA</div>
-        <img class="pimg" id="pi" src="nirvikphoto.jpg" alt="Nirvik Acharya" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='nirvik-photo.svg';return;} this.style.display='none';document.getElementById('pp').style.display='flex';">
-      </div>
-      <div class="pname">Nirvik Acharya</div>
-      <div class="prole">Flutter &middot; Node.js &middot; MongoDB</div>
-      <div class="chs">
-        <span class="ch cb">Flutter</span>
-        <span class="ch cp">Node.js</span>
-        <span class="ch ct">MongoDB</span>
-      </div>
-      <div class="ploc">&#128205; Kathmandu, Nepal</div>
-    </div>
+<div id="canvas-wrap"></div>
+
+<div class="hud hud-top">
+  <div class="brand">NIRVIK<span>.</span>ACHARYA</div>
+  <div class="instructions">
+    <b>WASD</b> / arrows to drive<br>
+    drive into a <b>pillar</b> to open it
   </div>
 </div>
 
-<hr>
+<div class="prompt" id="prompt">DRIVE CLOSER TO OPEN →</div>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="sl fi">About Me</div>
-  <div class="st fi">Building for mobile &amp; web</div>
-  <div class="ag">
-    <div class="at fi">
-      <p>I'm Nirvik Acharya, a passionate full-stack developer from Kathmandu, Nepal. I specialise in high-quality mobile applications with Flutter and Dart, and scalable backend systems with Node.js, Express, and MongoDB.</p>
-      <p>I love turning ideas into real products — from architecting REST APIs and database schemas to crafting smooth, beautiful mobile UI experiences. I'm always learning and enjoy tackling challenging problems.</p>
-      <p>When I'm not coding, I'm exploring the mountains of Nepal or contributing to open source projects.</p>
-    </div>
-    <div class="ss">
-      <div class="sc fi" style="transition-delay:.05s"><div class="snum" style="color:var(--blue)">3+</div><div class="slb">Years Experience</div></div>
-      <div class="sc fi" style="transition-delay:.1s"><div class="snum" style="color:var(--purple)">20+</div><div class="slb">Projects Built</div></div>
-      <div class="sc fi" style="transition-delay:.15s"><div class="snum" style="color:var(--teal)">10+</div><div class="slb">Happy Clients</div></div>
-      <div class="sc fi" style="transition-delay:.2s"><div class="snum" style="color:var(--amber)">&#8734;</div><div class="slb">Cups of Chai &#9749;</div></div>
-    </div>
+<div class="compass">
+  <div class="compass-inner" id="compassInner">
+    <div class="compass-car"></div>
   </div>
-</section>
+</div>
 
-<hr>
+<div class="speed">
+  <div class="val" id="speedVal">0</div>
+  <div class="lbl">KM/H</div>
+</div>
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="sl fi">What I work with</div>
-  <div class="st fi">Skills &amp; Technologies</div>
-  <div class="kg">
-    <div class="kc fi" style="transition-delay:.05s">
-      <div class="ki" style="background:var(--blue-bg)">&#128241;</div>
-      <div class="kn">Flutter</div><div class="kd">Cross-platform iOS &amp; Android</div>
-      <div class="kb"><div class="kbf" style="background:var(--blue)" data-w="92%"></div></div>
-    </div>
-    <div class="kc fi" style="transition-delay:.1s">
-      <div class="ki" style="background:var(--green-bg)">&#128994;</div>
-      <div class="kn">Node.js</div><div class="kd">Server-side JavaScript runtime</div>
-      <div class="kb"><div class="kbf" style="background:var(--green)" data-w="88%"></div></div>
-    </div>
-    <div class="kc fi" style="transition-delay:.15s">
-      <div class="ki" style="background:var(--purple-bg)">&#128642;</div>
-      <div class="kn">Express.js</div><div class="kd">REST API &amp; web framework</div>
-      <div class="kb"><div class="kbf" style="background:var(--purple)" data-w="85%"></div></div>
-    </div>
-    <div class="kc fi" style="transition-delay:.2s">
-      <div class="ki" style="background:var(--teal-bg)">&#127807;</div>
-      <div class="kn">MongoDB</div><div class="kd">NoSQL database &amp; Mongoose</div>
-      <div class="kb"><div class="kbf" style="background:var(--teal)" data-w="83%"></div></div>
-    </div>
-    <div class="kc fi" style="transition-delay:.25s">
-      <div class="ki" style="background:var(--blue-bg)">&#127919;</div>
-      <div class="kn">Dart</div><div class="kd">Flutter's native language</div>
-      <div class="kb"><div class="kbf" style="background:var(--blue)" data-w="90%"></div></div>
-    </div>
-    <div class="kc fi" style="transition-delay:.3s">
-      <div class="ki" style="background:var(--amber-bg)">&#128279;</div>
-      <div class="kn">REST APIs</div><div class="kd">Design, auth &amp; integration</div>
-      <div class="kb"><div class="kbf" style="background:var(--amber)" data-w="87%"></div></div>
-    </div>
-  </div>
-</section>
+<div class="touch-controls" id="touchControls">
+  <div class="tbtn" id="btn-up">▲</div>
+  <div class="tbtn" id="btn-left">◀</div>
+  <div class="tbtn" id="btn-down">▼</div>
+  <div class="tbtn" id="btn-right">▶</div>
+</div>
 
-<hr>
+<div class="panel" id="panel">
+  <div class="close" id="panelClose">✕</div>
+  <div id="panelContent"></div>
+</div>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="sl fi">What I've built</div>
-  <div class="st fi">Featured Projects</div>
-  <div class="prg">
-    <div class="prc fi" style="transition-delay:.05s">
-      <div class="prt"><div class="prtt">E-Commerce App</div><span class="ch cb">Mobile</span></div>
-      <p class="prd">Full-featured shopping app with product listings, cart, payment gateway integration, and real-time order tracking.</p>
-      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Dart</span><span class="pi2">Node.js</span><span class="pi2">MongoDB</span></div>
-      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a><a class="pra" href="#">Live Demo &rarr;</a></div>
-    </div>
-    <div class="prc fi" style="transition-delay:.1s">
-      <div class="prt"><div class="prtt">Task Manager API</div><span class="ch ct">Backend</span></div>
-      <p class="prd">RESTful API with JWT authentication, role-based access control, team workspaces, and full CRUD with pagination.</p>
-      <div class="prs"><span class="pi2">Express.js</span><span class="pi2">MongoDB</span><span class="pi2">JWT</span><span class="pi2">Mongoose</span></div>
-      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
-    </div>
-    <div class="prc fi" style="transition-delay:.15s">
-      <div class="prt"><div class="prtt">Real-Time Chat App</div><span class="ch cp">Full Stack</span></div>
-      <p class="prd">Messaging app with WebSocket support via Socket.io, group chats, media sharing, and push notifications.</p>
-      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Socket.io</span><span class="pi2">Node.js</span><span class="pi2">MongoDB</span></div>
-      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
-    </div>
-    <div class="prc fi" style="transition-delay:.2s">
-      <div class="prt"><div class="prtt">Food Delivery App</div><span class="ch cb">Mobile</span></div>
-      <p class="prd">Multi-restaurant ordering app with live driver tracking, reviews, promo codes, and Google Maps integration.</p>
-      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Node.js</span><span class="pi2">Express</span><span class="pi2">Maps API</span></div>
-      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
-    </div>
-    <div class="prc fi" style="transition-delay:.25s">
-      <div class="prt"><div class="prtt">Blog Platform</div><span class="ch ct">Full Stack</span></div>
-      <p class="prd">CMS-powered blogging platform with markdown editor, SEO optimization, comment system, and admin dashboard.</p>
-      <div class="prs"><span class="pi2">Node.js</span><span class="pi2">Express</span><span class="pi2">MongoDB</span><span class="pi2">REST API</span></div>
-      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
-    </div>
-    <div class="prc fi" style="transition-delay:.3s">
-      <div class="prt"><div class="prtt">Fitness Tracker</div><span class="ch cp">Mobile</span></div>
-      <p class="prd">Workout logging app with custom exercise creation, progress charts, streak tracking, and daily reminders.</p>
-      <div class="prs"><span class="pi2">Flutter</span><span class="pi2">Dart</span><span class="pi2">Node.js</span><span class="pi2">Charts</span></div>
-      <div class="prl"><a class="pra" href="https://github.com/Nirvikac" target="_blank">GitHub &rarr;</a></div>
-    </div>
-  </div>
-</section>
-
-<hr>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="cx fi">
-    <h2>Let's build something together</h2>
-    <p>Open to freelance projects, full-time roles, and exciting collaborations.</p>
-    <div class="cbtns">
-      <a class="cl" href="mailto:nirvik640@gmail.com">&#9993;&#65039; nirvik640@gmail.com</a>
-      <a class="cl" href="https://www.linkedin.com/in/nirvikweb/" target="_blank" rel="noreferrer">&#128188; LinkedIn</a>
-      <a class="cl" href="https://github.com/Nirvikac" target="_blank" rel="noreferrer">&#128025; GitHub</a>
-      <a class="cl" href="https://www.instagram.com/nirvik.web/" target="_blank" rel="noreferrer">&#128247; Instagram</a>
-      <a class="cl" href="#" onclick="alert('Add your CV PDF link here — replace this href with the path to your CV file.');return false">&#128196; Download CV</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>Designed &amp; built by <strong>Nirvik Acharya</strong> &middot; Kathmandu, Nepal &middot; &copy; 2026</p>
-  <p style="margin-top:6px">Flutter &middot; Node.js &middot; Express &middot; MongoDB</p>
-</footer>
-
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-function tg(){
-  var h=document.documentElement,b=document.getElementById('tbtn');
-  h.dataset.theme=h.dataset.theme==='light'?'dark':'light';
-  b.textContent=h.dataset.theme==='dark'?'☀️ Light':'🌙 Dark';
-}
-function sc(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
-var obs=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){
-    if(e.isIntersecting){
-      e.target.classList.add('v');
-      e.target.querySelectorAll('.kbf').forEach(function(b){b.style.width=b.dataset.w;});
+(function(){
+
+  var CONTENT = {
+    about: {
+      eyebrow: "01 — WHO'S BUILDING",
+      title: "About Nirvik",
+      html: '<div class="body">Full-stack developer based in Kathmandu, Nepal, specialising in cross-platform mobile apps with Flutter &amp; Dart, backed by scalable Node.js, Express and MongoDB systems.</div>' +
+            '<div class="body">I like turning ideas into real, working products — architecting REST APIs and data models on one side, crafting smooth mobile UI on the other.</div>' +
+            '<div class="stat-grid">' +
+              '<div class="stat-card"><div class="num">3+</div><div class="lbl">Years experience</div></div>' +
+              '<div class="stat-card"><div class="num">20+</div><div class="lbl">Projects built</div></div>' +
+              '<div class="stat-card"><div class="num">10+</div><div class="lbl">Happy clients</div></div>' +
+              '<div class="stat-card"><div class="num">∞</div><div class="lbl">Cups of chai ☕</div></div>' +
+            '</div>'
+    },
+    skills: {
+      eyebrow: "02 — TOOLBOX",
+      title: "Skills & tech",
+      html: '<div class="skill-list">' +
+        '<div class="skill-row"><div class="ic">📱</div><div><b>Flutter</b><span>Cross-platform iOS &amp; Android</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🎯</div><div><b>Dart</b><span>Flutter\'s native language</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🟢</div><div><b>Node.js</b><span>Server-side JavaScript runtime</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🚂</div><div><b>Express.js</b><span>REST API &amp; web framework</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🌿</div><div><b>MongoDB</b><span>NoSQL database &amp; Mongoose</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🔗</div><div><b>REST APIs</b><span>Design, auth &amp; integration</span></div></div>' +
+      '</div>'
+    },
+    projects: {
+      eyebrow: "03 — SHIPPED",
+      title: "Featured projects",
+      html:
+        '<div class="proj-card"><h3>E-Commerce App</h3><p>Full shopping app with cart, payment gateway integration and real-time order tracking.</p><div class="proj-tags"><span>Flutter</span><span>Node.js</span><span>MongoDB</span></div></div>' +
+        '<div class="proj-card"><h3>Task Manager API</h3><p>RESTful API with JWT auth, role-based access, team workspaces and full CRUD.</p><div class="proj-tags"><span>Express.js</span><span>JWT</span><span>Mongoose</span></div></div>' +
+        '<div class="proj-card"><h3>Real-Time Chat App</h3><p>Messaging app with Socket.io, group chats, media sharing and push notifications.</p><div class="proj-tags"><span>Flutter</span><span>Socket.io</span></div></div>' +
+        '<div class="proj-card"><h3>Food Delivery App</h3><p>Multi-restaurant ordering with live driver tracking and Maps integration.</p><div class="proj-tags"><span>Flutter</span><span>Maps API</span></div></div>'
+    },
+    contact: {
+      eyebrow: "04 — SAY HI",
+      title: "Let's build something",
+      html: '<div class="body">Open to freelance projects, full-time roles and collaborations.</div>' +
+      '<div class="contact-links">' +
+        '<a href="mailto:nirvik640@gmail.com">✉️ Email <span>nirvik640@gmail.com</span></a>' +
+        '<a href="https://www.linkedin.com/in/nirvikweb/" target="_blank" rel="noopener">💼 LinkedIn <span>→</span></a>' +
+        '<a href="https://github.com/Nirvikac" target="_blank" rel="noopener">🐙 GitHub <span>→</span></a>' +
+        '<a href="https://www.instagram.com/nirvik.web/" target="_blank" rel="noopener">📷 Instagram <span>→</span></a>' +
+      '</div>'
     }
+  };
+
+  var COLORS = {
+    bg: 0x070B14,
+    ground: 0x0c1424,
+    grid: 0x1c2a44,
+    accent: 0x2FE6D8,
+    warm: 0xFFB648,
+    car: 0x2FE6D8,
+    kiosk: { about:0xFF6B6B, skills:0xFFB648, projects:0x6BA8FF, contact:0x2FE6D8 }
+  };
+
+  var WORLD_SIZE = 130;
+
+  // ---------- renderer / scene ----------
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(COLORS.bg);
+  scene.fog = new THREE.Fog(COLORS.bg, 40, 130);
+
+  var camera = new THREE.PerspectiveCamera(58, window.innerWidth/window.innerHeight, 0.1, 500);
+  camera.position.set(0, 8, -14);
+
+  var renderer = new THREE.WebGLRenderer({ antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  document.getElementById('canvas-wrap').appendChild(renderer.domElement);
+
+  // ---------- lights ----------
+  var hemi = new THREE.HemisphereLight(0x8fb8ff, 0x0a0e18, 0.6);
+  scene.add(hemi);
+  var sun = new THREE.DirectionalLight(0xffffff, 1.1);
+  sun.position.set(30, 45, -20);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048,2048);
+  sun.shadow.camera.left = -70; sun.shadow.camera.right = 70;
+  sun.shadow.camera.top = 70; sun.shadow.camera.bottom = -70;
+  sun.shadow.camera.far = 150;
+  scene.add(sun);
+  var fillLight = new THREE.PointLight(COLORS.accent, 0.6, 60);
+  fillLight.position.set(0, 10, 0);
+  scene.add(fillLight);
+
+  // ---------- ground ----------
+  var groundGeo = new THREE.PlaneGeometry(WORLD_SIZE*2, WORLD_SIZE*2, 1, 1);
+  var groundMat = new THREE.MeshStandardMaterial({ color: COLORS.ground, roughness:0.95, metalness:0.05 });
+  var ground = new THREE.Mesh(groundGeo, groundMat);
+  ground.rotation.x = -Math.PI/2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  var grid = new THREE.GridHelper(WORLD_SIZE*2, 60, COLORS.grid, COLORS.grid);
+  grid.position.y = 0.01;
+  grid.material.opacity = 0.5; grid.material.transparent = true;
+  scene.add(grid);
+
+  // boundary ring
+  var boundaryGeo = new THREE.RingGeometry(WORLD_SIZE-1, WORLD_SIZE, 64);
+  var boundaryMat = new THREE.MeshBasicMaterial({ color: COLORS.accent, side: THREE.DoubleSide, transparent:true, opacity:0.25 });
+  var boundary = new THREE.Mesh(boundaryGeo, boundaryMat);
+  boundary.rotation.x = -Math.PI/2; boundary.position.y = 0.02;
+  scene.add(boundary);
+
+  // ---------- decorative props ----------
+  function makeTree(x,z,scale){
+    var g = new THREE.Group();
+    var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.35,2,6), new THREE.MeshStandardMaterial({color:0x3a2a20, roughness:1}));
+    trunk.position.y = 1; trunk.castShadow = true;
+    var leaves = new THREE.Mesh(new THREE.ConeGeometry(1.6,3.2,7), new THREE.MeshStandardMaterial({color:0x123a2e, roughness:0.9}));
+    leaves.position.y = 3.4; leaves.castShadow = true;
+    g.add(trunk, leaves);
+    g.position.set(x,0,z); g.scale.setScalar(scale||1);
+    scene.add(g);
+  }
+  function makeRock(x,z,scale){
+    var m = new THREE.Mesh(new THREE.IcosahedronGeometry(0.9,0), new THREE.MeshStandardMaterial({color:0x1a2436, roughness:1, flatShading:true}));
+    m.position.set(x,0.5,z); m.rotation.set(Math.random(),Math.random(),Math.random());
+    m.scale.setScalar(scale||1); m.castShadow = true; m.receiveShadow = true;
+    scene.add(m);
+  }
+  for(var i=0;i<45;i++){
+    var ang = Math.random()*Math.PI*2, rad = 25+Math.random()*95;
+    var x = Math.cos(ang)*rad, z = Math.sin(ang)*rad;
+    if(Math.random()>0.45) makeTree(x,z,0.7+Math.random()*0.8);
+    else makeRock(x,z,0.5+Math.random()*1.1);
+  }
+
+  // floating accent cubes around spawn monument
+  var floatCubes = [];
+  for(var i=0;i<10;i++){
+    var c = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.5), new THREE.MeshStandardMaterial({color: i%2? COLORS.warm : COLORS.accent, emissive: i%2? COLORS.warm:COLORS.accent, emissiveIntensity:0.4}));
+    var a = (i/10)*Math.PI*2;
+    c.userData = { baseAngle:a, radius:6+Math.sin(i)*1, baseY:2+Math.sin(i*1.7)*0.6 };
+    scene.add(c);
+    floatCubes.push(c);
+  }
+
+  // spawn monument
+  (function(){
+    var base = new THREE.Mesh(new THREE.CylinderGeometry(2.4,2.6,0.6,24), new THREE.MeshStandardMaterial({color:0x121b2e}));
+    base.position.y = 0.3; base.receiveShadow = true; scene.add(base);
+    var pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.6,4,10), new THREE.MeshStandardMaterial({color:0x18233a, emissive:COLORS.accent, emissiveIntensity:0.12}));
+    pillar.position.y = 2.6; pillar.castShadow = true; scene.add(pillar);
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(1.4,0.08,10,40), new THREE.MeshStandardMaterial({color:COLORS.accent, emissive:COLORS.accent, emissiveIntensity:0.6}));
+    ring.position.y = 5; ring.rotation.x = Math.PI/2; scene.add(ring);
+    scene.userData.homeRing = ring;
+  })();
+
+  // ---------- kiosk builder ----------
+  function makeLabelSprite(text, color){
+    var canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 128;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,512,128);
+    ctx.fillStyle = 'rgba(7,11,20,0.75)';
+    roundRect(ctx, 8,8,496,112,20); ctx.fill();
+    ctx.strokeStyle = '#'+color.toString(16).padStart(6,'0');
+    ctx.lineWidth = 3; roundRect(ctx,8,8,496,112,20); ctx.stroke();
+    ctx.fillStyle = '#EAF0FA';
+    ctx.font = '700 46px "Space Grotesk", sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, 256, 64);
+    var tex = new THREE.CanvasTexture(canvas);
+    var mat = new THREE.SpriteMaterial({ map: tex, transparent:true });
+    var sprite = new THREE.Sprite(mat);
+    sprite.scale.set(6,1.5,1);
+    return sprite;
+  }
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  }
+
+  var kiosks = [];
+  function makeKiosk(key, label, x, z, color){
+    var g = new THREE.Group();
+    var base = new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.4,0.5,20), new THREE.MeshStandardMaterial({color:0x101a2c}));
+    base.position.y = 0.25; base.receiveShadow = true; g.add(base);
+
+    var pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.55,3.6,10), new THREE.MeshStandardMaterial({color:0x141f34, emissive:color, emissiveIntensity:0.25}));
+    pillar.position.y = 2.05; pillar.castShadow = true; g.add(pillar);
+
+    var cap = new THREE.Mesh(new THREE.IcosahedronGeometry(0.6,0), new THREE.MeshStandardMaterial({color:color, emissive:color, emissiveIntensity:0.7, flatShading:true}));
+    cap.position.y = 4.1; cap.castShadow = true; g.add(cap);
+
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(1.6,0.06,8,32), new THREE.MeshStandardMaterial({color:color, emissive:color, emissiveIntensity:0.5}));
+    ring.position.y = 0.55; ring.rotation.x = Math.PI/2; g.add(ring);
+
+    var sprite = makeLabelSprite(label, color);
+    sprite.position.y = 5.4; g.add(sprite);
+
+    var light = new THREE.PointLight(color, 0.8, 12);
+    light.position.y = 3; g.add(light);
+
+    g.position.set(x,0,z);
+    g.userData = { key:key, ring:ring, cap:cap };
+    scene.add(g);
+    kiosks.push(g);
+    return g;
+  }
+
+  makeKiosk('about', 'ABOUT', 32, 32, COLORS.kiosk.about);
+  makeKiosk('skills', 'SKILLS', -32, 32, COLORS.kiosk.skills);
+  makeKiosk('projects', 'PROJECTS', -32, -32, COLORS.kiosk.projects);
+  makeKiosk('contact', 'CONTACT', 32, -32, COLORS.kiosk.contact);
+
+  // ---------- car ----------
+  var car = new THREE.Group();
+  var bodyMat = new THREE.MeshStandardMaterial({ color: COLORS.car, roughness:0.35, metalness:0.4, emissive:COLORS.car, emissiveIntensity:0.08 });
+  var body = new THREE.Mesh(new THREE.BoxGeometry(2.0,0.6,3.6), bodyMat);
+  body.position.y = 0.6; body.castShadow = true; car.add(body);
+  var cabin = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.55,1.8), new THREE.MeshStandardMaterial({ color:0x0c1420, roughness:0.2, metalness:0.6 }));
+  cabin.position.set(0,1.05,-0.2); cabin.castShadow = true; car.add(cabin);
+  var nose = new THREE.Mesh(new THREE.BoxGeometry(1.8,0.4,0.6), new THREE.MeshStandardMaterial({ color:COLORS.warm, emissive:COLORS.warm, emissiveIntensity:0.5 }));
+  nose.position.set(0,0.55,1.9); car.add(nose);
+
+  var wheels = [];
+  var wheelGeo = new THREE.CylinderGeometry(0.42,0.42,0.35,14);
+  [[ -1.05,0.42,1.15],[1.05,0.42,1.15],[-1.05,0.42,-1.15],[1.05,0.42,-1.15]].forEach(function(p){
+    var w = new THREE.Mesh(wheelGeo, new THREE.MeshStandardMaterial({color:0x0a0f18, roughness:0.8}));
+    w.rotation.z = Math.PI/2; w.position.set(p[0],p[1],p[2]); w.castShadow = true;
+    car.add(w); wheels.push(w);
   });
-},{threshold:.1});
-document.querySelectorAll('.fi').forEach(function(el){obs.observe(el);});
-setTimeout(function(){document.querySelectorAll('.hero .fi').forEach(function(el){el.classList.add('v');});},80);
+  var headlightGeo = new THREE.SphereGeometry(0.12,8,8);
+  [[-0.7,0.65,1.85],[0.7,0.65,1.85]].forEach(function(p){
+    var hl = new THREE.Mesh(headlightGeo, new THREE.MeshBasicMaterial({color:0xffffff}));
+    hl.position.set(p[0],p[1],p[2]); car.add(hl);
+  });
+  var headlightBeam = new THREE.SpotLight(0xffffff, 0.5, 30, Math.PI/6, 0.5);
+  headlightBeam.position.set(0,1,2); car.add(headlightBeam);
+
+  car.position.set(0,0,0);
+  scene.add(car);
+
+  // ---------- controls ----------
+  var keys = {};
+  window.addEventListener('keydown', function(e){ keys[e.key.toLowerCase()] = true; });
+  window.addEventListener('keyup', function(e){ keys[e.key.toLowerCase()] = false; });
+
+  function bindTouch(id, key){
+    var el = document.getElementById(id);
+    ['touchstart','mousedown'].forEach(function(ev){ el.addEventListener(ev, function(e){ e.preventDefault(); keys[key]=true; }); });
+    ['touchend','touchcancel','mouseup','mouseleave'].forEach(function(ev){ el.addEventListener(ev, function(e){ keys[key]=false; }); });
+  }
+  bindTouch('btn-up','w'); bindTouch('btn-down','s'); bindTouch('btn-left','a'); bindTouch('btn-right','d');
+  if('ontouchstart' in window){ document.getElementById('touchControls').classList.add('active'); }
+
+  // ---------- physics ----------
+  var speed = 0, heading = 0;
+  var MAX_SPEED = 0.62, ACCEL = 0.018, BRAKE = 0.03, FRICTION = 0.965, TURN = 0.034;
+
+  var activeKiosk = null;
+  var panel = document.getElementById('panel');
+  var panelContent = document.getElementById('panelContent');
+  var prompt = document.getElementById('prompt');
+  var panelOpenKey = null;
+
+  document.getElementById('panelClose').addEventListener('click', function(){
+    panel.classList.remove('open'); panelOpenKey = 'closed-by-user';
+  });
+
+  function openPanel(key){
+    var d = CONTENT[key];
+    if(!d) return;
+    panelContent.innerHTML = '<div class="eyebrow">'+d.eyebrow+'</div><h2>'+d.title+'</h2>'+d.html;
+    panel.classList.add('open');
+    panelOpenKey = key;
+  }
+
+  function updateCamera(){
+    var offset = new THREE.Vector3(0, 5.2, -9.5);
+    offset.applyAxisAngle(new THREE.Vector3(0,1,0), heading);
+    var targetPos = car.position.clone().add(offset);
+    camera.position.lerp(targetPos, 0.08);
+    var lookAt = car.position.clone().add(new THREE.Vector3(0,1.2,0));
+    camera.lookAt(lookAt);
+  }
+
+  function updateCompass(){
+    var inner = document.getElementById('compassInner');
+    inner.querySelectorAll('.compass-dot').forEach(function(d){ d.remove(); });
+    kiosks.forEach(function(k){
+      var rel = new THREE.Vector2(k.position.x - car.position.x, k.position.z - car.position.z);
+      var dist = rel.length();
+      var clamped = Math.min(dist, 60)/60 * 34;
+      var ang = Math.atan2(rel.x, rel.y) - heading;
+      var dot = document.createElement('div');
+      dot.className = 'compass-dot';
+      dot.style.left = (38 + Math.sin(ang)*clamped) + 'px';
+      dot.style.top = (38 - Math.cos(ang)*clamped) + 'px';
+      inner.appendChild(dot);
+    });
+  }
+
+  var clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    var dt = Math.min(clock.getDelta(), 0.05) * 60;
+
+    // input
+    var accel = (keys['w'] || keys['arrowup']) ? 1 : 0;
+    var brake = (keys['s'] || keys['arrowdown']) ? 1 : 0;
+    var left = (keys['a'] || keys['arrowleft']) ? 1 : 0;
+    var right = (keys['d'] || keys['arrowright']) ? 1 : 0;
+
+    if(accel) speed += ACCEL*dt;
+    else if(brake) speed -= BRAKE*dt;
+    else speed *= Math.pow(FRICTION, dt);
+    speed = Math.max(-MAX_SPEED*0.5, Math.min(MAX_SPEED, speed));
+    if(Math.abs(speed) < 0.002) speed = 0;
+
+    var turnFactor = (speed/MAX_SPEED);
+    if(left) heading += TURN*dt*(0.4+Math.abs(turnFactor));
+    if(right) heading -= TURN*dt*(0.4+Math.abs(turnFactor));
+
+    car.rotation.y = heading;
+    car.position.x += Math.sin(heading)*speed*dt;
+    car.position.z += Math.cos(heading)*speed*dt;
+
+    var distFromCenter = Math.sqrt(car.position.x*car.position.x + car.position.z*car.position.z);
+    if(distFromCenter > WORLD_SIZE-3){
+      var ang = Math.atan2(car.position.x, car.position.z);
+      car.position.x = Math.sin(ang)*(WORLD_SIZE-3);
+      car.position.z = Math.cos(ang)*(WORLD_SIZE-3);
+      speed *= 0.3;
+    }
+
+    wheels.forEach(function(w){ w.rotation.x += speed*dt*1.4; });
+    var tilt = (left-right) * Math.min(Math.abs(speed)/MAX_SPEED,1) * 0.06;
+    body.rotation.z = THREE.MathUtils.lerp(body.rotation.z, -tilt, 0.2);
+    cabin.rotation.z = body.rotation.z;
+
+    // floating cubes
+    var t = performance.now()*0.001;
+    floatCubes.forEach(function(c,i){
+      var ud = c.userData;
+      var a = ud.baseAngle + t*0.3;
+      c.position.set(Math.cos(a)*ud.radius, ud.baseY+Math.sin(t*2+i)*0.3, Math.sin(a)*ud.radius);
+      c.rotation.x += 0.02; c.rotation.y += 0.03;
+    });
+    if(scene.userData.homeRing){ scene.userData.homeRing.rotation.z += 0.01; }
+
+    // kiosk hover animation + proximity
+    var nearest = null, nearestDist = 999;
+    kiosks.forEach(function(k){
+      k.userData.cap.rotation.y += 0.02;
+      k.userData.cap.position.y = 4.1 + Math.sin(t*2 + k.position.x)*0.15;
+      var d = car.position.distanceTo(k.position);
+      if(d < nearestDist){ nearestDist = d; nearest = k; }
+    });
+
+    if(nearest && nearestDist < 10){
+      if(nearestDist < 6){
+        if(panelOpenKey !== nearest.userData.key){ openPanel(nearest.userData.key); }
+        prompt.classList.remove('show');
+      } else {
+        prompt.classList.add('show');
+      }
+    } else {
+      prompt.classList.remove('show');
+      if(panel.classList.contains('open') && panelOpenKey !== 'closed-by-user'){
+        panel.classList.remove('open');
+        panelOpenKey = null;
+      }
+    }
+    if(nearestDist > 11 && panelOpenKey === 'closed-by-user'){ panelOpenKey = null; }
+
+    document.getElementById('speedVal').textContent = Math.round(Math.abs(speed)*140);
+
+    updateCamera();
+    updateCompass();
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener('resize', function(){
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // fake loader progress then start
+  var bar = document.getElementById('loadbar');
+  var p = 0;
+  var iv = setInterval(function(){
+    p += 8 + Math.random()*14;
+    if(p >= 100){ p = 100; clearInterval(iv);
+      bar.style.width = '100%';
+      setTimeout(function(){
+        document.getElementById('loader').style.opacity = '0';
+        setTimeout(function(){ document.getElementById('loader').style.display='none'; }, 650);
+      }, 200);
+    } else {
+      bar.style.width = p+'%';
+    }
+  }, 120);
+
+  animate();
+})();
 </script>
 </body>
 </html>
