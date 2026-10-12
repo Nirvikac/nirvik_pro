@@ -145,6 +145,18 @@
   }
   .prompt.show{ opacity:1; }
 </style>
+<style>
+  /* BizOS register form (REGISTER kiosk) */
+  .reg-form{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+  .reg-form input{ background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:var(--text); padding:12px 14px; border-radius:10px; font-size:14px; font-family:inherit; outline:none; width:100%; }
+  .reg-form input:focus{ border-color:var(--accent); box-shadow:0 0 0 2px rgba(47,230,216,0.15); }
+  .reg-form button{ background:var(--accent); color:#071018; border:none; padding:12px 14px; border-radius:10px; font-weight:700; font-size:14px; font-family:inherit; cursor:pointer; transition:opacity .15s; }
+  .reg-form button:disabled{ opacity:.6; cursor:wait; }
+  .reg-hint{ font-size:11px; color:var(--text-muted); line-height:1.5; }
+  .reg-status{ font-size:13px; line-height:1.5; min-height:16px; }
+  .reg-status.ok{ color:#4ade80; }
+  .reg-status.err{ color:#f87171; }
+</style>
 </head>
 <body>
 
@@ -238,6 +250,19 @@
         '<a href="https://github.com/Nirvikac" target="_blank" rel="noopener">🐙 GitHub <span>→</span></a>' +
         '<a href="https://www.instagram.com/nirvik.web/" target="_blank" rel="noopener">📷 Instagram <span>→</span></a>' +
       '</div>'
+    },
+    register: {
+      eyebrow: "05 — BIZOS",
+      title: "Register for BizOS",
+      html: '<div class="body">Create your account for the BizOS business dashboard.</div>' +
+        '<form class="reg-form" id="regForm">' +
+          '<input type="text" name="username" placeholder="Username" required maxlength="30" autocomplete="username">' +
+          '<input type="email" name="email" placeholder="Email" required autocomplete="email">' +
+          '<input type="password" name="password" placeholder="Password" required minlength="6" autocomplete="new-password">' +
+          '<div class="reg-hint">6+ characters with uppercase, lowercase, number &amp; special character. You\'ll verify your email after signing up.</div>' +
+          '<button type="submit">Create account</button>' +
+          '<div class="reg-status" role="status" aria-live="polite"></div>' +
+        '</form>'
     }
   };
 
@@ -247,8 +272,7 @@
     grid: 0x1c2a44,
     accent: 0x2FE6D8,
     warm: 0xFFB648,
-    car: 0x2FE6D8,
-    kiosk: { about:0xFF6B6B, skills:0xFFB648, projects:0x6BA8FF, contact:0x2FE6D8 }
+    car: 0x2FE6D8,    kiosk: { about:0xFF6B6B, skills:0xFFB648, projects:0x6BA8FF, contact:0x2FE6D8, register:0xB647FF}
   };
 
   var WORLD_SIZE = 130;
@@ -405,6 +429,7 @@
   makeKiosk('skills', 'SKILLS', -32, 32, COLORS.kiosk.skills);
   makeKiosk('projects', 'PROJECTS', -32, -32, COLORS.kiosk.projects);
   makeKiosk('contact', 'CONTACT', 32, -32, COLORS.kiosk.contact);
+  makeKiosk('register', 'REGISTER', 0, 48, COLORS.kiosk.register);
 
   // ---------- car ----------
   var car = new THREE.Group();
@@ -459,6 +484,44 @@
 
   document.getElementById('panelClose').addEventListener('click', function(){
     panel.classList.remove('open'); panelOpenKey = 'closed-by-user';
+  });
+
+  // REGISTER form — panel content is re-rendered on every openPanel, so
+  // delegate the submit from the container instead of binding to the form.
+  panelContent.addEventListener('submit', function(e){
+    var form = e.target;
+    if(!form || form.id !== 'regForm') return;
+    e.preventDefault();
+    var status = form.querySelector('.reg-status');
+    var btn = form.querySelector('button');
+    status.className = 'reg-status';
+    status.textContent = 'Creating your account…';
+    btn.disabled = true;
+    fetch('https://backend-bizos.onrender.com/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: form.username.value.trim(),
+        email: form.email.value.trim(),
+        password: form.password.value
+      })
+    }).then(function(res){
+      return res.json().catch(function(){ return {}; }).then(function(data){
+        if(res.ok){
+          status.className = 'reg-status ok';
+          status.textContent = data.message || 'Account created! Check your email to verify.';
+          form.reset();
+        } else {
+          status.className = 'reg-status err';
+          status.textContent = data.message || ('Registration failed (' + res.status + ')');
+        }
+      });
+    }).catch(function(){
+      status.className = 'reg-status err';
+      status.textContent = 'Network error — please try again.';
+    }).then(function(){
+      btn.disabled = false;
+    });
   });
 
   function openPanel(key){
