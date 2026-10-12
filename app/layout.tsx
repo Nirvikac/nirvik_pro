@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nirvik Acharya — Full-stack Developer",
+  title: "Register — BizOS | Nirvik Acharya",
   description:
-    "Full-stack developer based in Kathmandu, Nepal — Flutter, Node.js, Express and MongoDB. Drive around the portfolio and register for BizOS.",
+    "Create your BizOS account — the business dashboard by Nirvik Acharya, Kathmandu, Nepal.",
 };
 
 export const viewport: Viewport = {

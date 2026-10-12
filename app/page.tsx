@@ -1,101 +1,119 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState } from "react";
+import Link from "next/link";
 
-// The 3D world (three.js scene, car physics, kiosk panels) lives verbatim in
-// public/portfolio.js — it expects the markup below to already exist, so the
-// scripts are appended after mount: three.js from its CDN first, then the
-// world script once THREE is available.
+const BACKEND = "https://backend-bizos.onrender.com";
+
+type Status = { kind: "idle" | "busy" | "ok" | "err"; text: string };
+
 export default function Home() {
-  const startedRef = useRef(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState<Status>({ kind: "idle", text: "" });
 
-  useEffect(() => {
-    // React Strict Mode mounts effects twice in dev; the world script is an
-    // IIFE that builds a whole scene, so guard against running it twice.
-    if (startedRef.current) return;
-    startedRef.current = true;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus({ kind: "busy", text: "Creating your account…" });
 
-    const three = document.createElement("script");
-    three.src =
-      "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+    try {
+      const res = await fetch(`${BACKEND}/api/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await res.json().catch(() => ({}));
 
-    const world = document.createElement("script");
-    world.src = "/portfolio.js";
-
-    three.onload = () => {
-      document.body.appendChild(world);
-    };
-    document.body.appendChild(three);
-
-    return () => {
-      three.remove();
-      world.remove();
-    };
-  }, []);
+      if (res.ok) {
+        setStatus({
+          kind: "ok",
+          text:
+            data.message ||
+            "Account created! Check your email to verify, then log in.",
+        });
+        setUsername("");
+        setEmail("");
+        setPassword("");
+      } else {
+        setStatus({
+          kind: "err",
+          text: data.message || `Registration failed (${res.status})`,
+        });
+      }
+    } catch {
+      setStatus({
+        kind: "err",
+        text: "Network error — please try again.",
+      });
+    }
+  };
 
   return (
-    <>
-      <div id="loader">
-        <div className="mark">
-          NIRVIK<span>.DRIVE</span>
-        </div>
-        <div className="bar">
-          <i id="loadbar"></i>
-        </div>
-        <div className="hint">loading world…</div>
-      </div>
+    <main className="reg-page">
+      <div className="reg-card">
+        <div className="reg-eyebrow">BIZOS — BUSINESS DASHBOARD</div>
+        <h1 className="reg-title">Create your account</h1>
+        <p className="reg-sub">
+          Register for BizOS, then verify your email to start selling.
+        </p>
 
-      <div id="canvas-wrap"></div>
+        <form className="reg-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            maxLength={30}
+            autoComplete="username"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+            autoComplete="new-password"
+          />
+          <div className="reg-hint">
+            6+ characters with uppercase, lowercase, number &amp; special
+            character. You&apos;ll verify your email after signing up.
+          </div>
+          <button type="submit" disabled={status.kind === "busy"}>
+            {status.kind === "busy" ? "Creating account…" : "Create account"}
+          </button>
+          {status.text && (
+            <div
+              className={`reg-status ${status.kind === "ok" ? "ok" : status.kind === "err" ? "err" : ""}`}
+              role="status"
+              aria-live="polite"
+            >
+              {status.text}
+            </div>
+          )}
+        </form>
 
-      <div className="hud hud-top">
-        <div className="brand">
-          NIRVIK<span>.</span>ACHARYA
-        </div>
-        <div className="instructions">
-          <b>WASD</b> / arrows to drive
-          <br />
-          drive into a <b>pillar</b> to open it
+        <div className="reg-links">
+          <a
+            href="https://bizos-web-ms3k.onrender.com/"
+            target="_blank"
+            rel="noopener"
+          >
+            Already registered? Login →
+          </a>
+          <Link href="/portfolio">Drive the portfolio →</Link>
         </div>
       </div>
-
-      <div className="prompt" id="prompt">
-        DRIVE CLOSER TO OPEN →
-      </div>
-
-      <div className="compass">
-        <div className="compass-inner" id="compassInner">
-          <div className="compass-car"></div>
-        </div>
-      </div>
-
-      <div className="speed">
-        <div className="val" id="speedVal">
-          0
-        </div>
-        <div className="lbl">KM/H</div>
-      </div>
-
-      <div className="touch-controls" id="touchControls">
-        <div className="tbtn" id="btn-up">
-          ▲
-        </div>
-        <div className="tbtn" id="btn-left">
-          ◀
-        </div>
-        <div className="tbtn" id="btn-down">
-          ▼
-        </div>
-        <div className="tbtn" id="btn-right">
-          ▶
-        </div>
-      </div>
-
-      <div className="panel" id="panel">
-        <div className="close" id="panelClose">
-          ✕
-        </div>
-        <div id="panelContent"></div>
-      </div>
-    </>
+    </main>
   );
 }
