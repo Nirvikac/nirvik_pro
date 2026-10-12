@@ -1,0 +1,457 @@
+(function(){
+
+  var CONTENT = {
+    about: {
+      eyebrow: "01 — WHO'S BUILDING",
+      title: "About Nirvik",
+      html: '<div class="body">Full-stack developer based in Kathmandu, Nepal, specialising in cross-platform mobile apps with Flutter &amp; Dart, backed by scalable Node.js, Express and MongoDB systems.</div>' +
+            '<div class="body">I like turning ideas into real, working products — architecting REST APIs and data models on one side, crafting smooth mobile UI on the other.</div>' +
+            '<div class="stat-grid">' +
+              '<div class="stat-card"><div class="num">3+</div><div class="lbl">Years experience</div></div>' +
+              '<div class="stat-card"><div class="num">20+</div><div class="lbl">Projects built</div></div>' +
+              '<div class="stat-card"><div class="num">10+</div><div class="lbl">Happy clients</div></div>' +
+              '<div class="stat-card"><div class="num">∞</div><div class="lbl">Cups of chai ☕</div></div>' +
+            '</div>'
+    },
+    skills: {
+      eyebrow: "02 — TOOLBOX",
+      title: "Skills & tech",
+      html: '<div class="skill-list">' +
+        '<div class="skill-row"><div class="ic">📱</div><div><b>Flutter</b><span>Cross-platform iOS &amp; Android</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🎯</div><div><b>Dart</b><span>Flutter\'s native language</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🟢</div><div><b>Node.js</b><span>Server-side JavaScript runtime</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🚂</div><div><b>Express.js</b><span>REST API &amp; web framework</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🌿</div><div><b>MongoDB</b><span>NoSQL database &amp; Mongoose</span></div></div>' +
+        '<div class="skill-row"><div class="ic">🔗</div><div><b>REST APIs</b><span>Design, auth &amp; integration</span></div></div>' +
+      '</div>'
+    },
+    projects: {
+      eyebrow: "03 — SHIPPED",
+      title: "Featured projects",
+      html:
+        '<div class="proj-card"><h3>E-Commerce App</h3><p>Full shopping app with cart, payment gateway integration and real-time order tracking.</p><div class="proj-tags"><span>Flutter</span><span>Node.js</span><span>MongoDB</span></div></div>' +
+        '<div class="proj-card"><h3>Task Manager API</h3><p>RESTful API with JWT auth, role-based access, team workspaces and full CRUD.</p><div class="proj-tags"><span>Express.js</span><span>JWT</span><span>Mongoose</span></div></div>' +
+        '<div class="proj-card"><h3>Real-Time Chat App</h3><p>Messaging app with Socket.io, group chats, media sharing and push notifications.</p><div class="proj-tags"><span>Flutter</span><span>Socket.io</span></div></div>' +
+        '<div class="proj-card"><h3>Food Delivery App</h3><p>Multi-restaurant ordering with live driver tracking and Maps integration.</p><div class="proj-tags"><span>Flutter</span><span>Maps API</span></div></div>'
+    },
+    contact: {
+      eyebrow: "04 — SAY HI",
+      title: "Let's build something",
+      html: '<div class="body">Open to freelance projects, full-time roles and collaborations.</div>' +
+      '<div class="contact-links">' +
+        '<a href="mailto:nirvik640@gmail.com">✉️ Email <span>nirvik640@gmail.com</span></a>' +
+        '<a href="https://www.linkedin.com/in/nirvikweb/" target="_blank" rel="noopener">💼 LinkedIn <span>→</span></a>' +
+        '<a href="https://github.com/Nirvikac" target="_blank" rel="noopener">🐙 GitHub <span>→</span></a>' +
+        '<a href="https://www.instagram.com/nirvik.web/" target="_blank" rel="noopener">📷 Instagram <span>→</span></a>' +
+      '</div>'
+    },
+    register: {
+      eyebrow: "05 — BIZOS",
+      title: "Register for BizOS",
+      html: '<div class="body">Create your account for the BizOS business dashboard.</div>' +
+        '<form class="reg-form" id="regForm">' +
+          '<input type="text" name="username" placeholder="Username" required maxlength="30" autocomplete="username">' +
+          '<input type="email" name="email" placeholder="Email" required autocomplete="email">' +
+          '<input type="password" name="password" placeholder="Password" required minlength="6" autocomplete="new-password">' +
+          '<div class="reg-hint">6+ characters with uppercase, lowercase, number &amp; special character. You\'ll verify your email after signing up.</div>' +
+          '<button type="submit">Create account</button>' +
+          '<div class="reg-status" role="status" aria-live="polite"></div>' +
+        '</form>'
+    }
+  };
+
+  var COLORS = {
+    bg: 0x070B14,
+    ground: 0x0c1424,
+    grid: 0x1c2a44,
+    accent: 0x2FE6D8,
+    warm: 0xFFB648,
+    car: 0x2FE6D8,    kiosk: { about:0xFF6B6B, skills:0xFFB648, projects:0x6BA8FF, contact:0x2FE6D8, register:0xB647FF}
+  };
+
+  var WORLD_SIZE = 130;
+
+  // ---------- renderer / scene ----------
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(COLORS.bg);
+  scene.fog = new THREE.Fog(COLORS.bg, 40, 130);
+
+  var camera = new THREE.PerspectiveCamera(58, window.innerWidth/window.innerHeight, 0.1, 500);
+  camera.position.set(0, 8, -14);
+
+  var renderer = new THREE.WebGLRenderer({ antialias:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  document.getElementById('canvas-wrap').appendChild(renderer.domElement);
+
+  // ---------- lights ----------
+  var hemi = new THREE.HemisphereLight(0x8fb8ff, 0x0a0e18, 0.6);
+  scene.add(hemi);
+  var sun = new THREE.DirectionalLight(0xffffff, 1.1);
+  sun.position.set(30, 45, -20);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048,2048);
+  sun.shadow.camera.left = -70; sun.shadow.camera.right = 70;
+  sun.shadow.camera.top = 70; sun.shadow.camera.bottom = -70;
+  sun.shadow.camera.far = 150;
+  scene.add(sun);
+  var fillLight = new THREE.PointLight(COLORS.accent, 0.6, 60);
+  fillLight.position.set(0, 10, 0);
+  scene.add(fillLight);
+
+  // ---------- ground ----------
+  var groundGeo = new THREE.PlaneGeometry(WORLD_SIZE*2, WORLD_SIZE*2, 1, 1);
+  var groundMat = new THREE.MeshStandardMaterial({ color: COLORS.ground, roughness:0.95, metalness:0.05 });
+  var ground = new THREE.Mesh(groundGeo, groundMat);
+  ground.rotation.x = -Math.PI/2;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  var grid = new THREE.GridHelper(WORLD_SIZE*2, 60, COLORS.grid, COLORS.grid);
+  grid.position.y = 0.01;
+  grid.material.opacity = 0.5; grid.material.transparent = true;
+  scene.add(grid);
+
+  // boundary ring
+  var boundaryGeo = new THREE.RingGeometry(WORLD_SIZE-1, WORLD_SIZE, 64);
+  var boundaryMat = new THREE.MeshBasicMaterial({ color: COLORS.accent, side: THREE.DoubleSide, transparent:true, opacity:0.25 });
+  var boundary = new THREE.Mesh(boundaryGeo, boundaryMat);
+  boundary.rotation.x = -Math.PI/2; boundary.position.y = 0.02;
+  scene.add(boundary);
+
+  // ---------- decorative props ----------
+  function makeTree(x,z,scale){
+    var g = new THREE.Group();
+    var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.35,2,6), new THREE.MeshStandardMaterial({color:0x3a2a20, roughness:1}));
+    trunk.position.y = 1; trunk.castShadow = true;
+    var leaves = new THREE.Mesh(new THREE.ConeGeometry(1.6,3.2,7), new THREE.MeshStandardMaterial({color:0x123a2e, roughness:0.9}));
+    leaves.position.y = 3.4; leaves.castShadow = true;
+    g.add(trunk, leaves);
+    g.position.set(x,0,z); g.scale.setScalar(scale||1);
+    scene.add(g);
+  }
+  function makeRock(x,z,scale){
+    var m = new THREE.Mesh(new THREE.IcosahedronGeometry(0.9,0), new THREE.MeshStandardMaterial({color:0x1a2436, roughness:1, flatShading:true}));
+    m.position.set(x,0.5,z); m.rotation.set(Math.random(),Math.random(),Math.random());
+    m.scale.setScalar(scale||1); m.castShadow = true; m.receiveShadow = true;
+    scene.add(m);
+  }
+  for(var i=0;i<45;i++){
+    var ang = Math.random()*Math.PI*2, rad = 25+Math.random()*95;
+    var x = Math.cos(ang)*rad, z = Math.sin(ang)*rad;
+    if(Math.random()>0.45) makeTree(x,z,0.7+Math.random()*0.8);
+    else makeRock(x,z,0.5+Math.random()*1.1);
+  }
+
+  // floating accent cubes around spawn monument
+  var floatCubes = [];
+  for(var i=0;i<10;i++){
+    var c = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.5), new THREE.MeshStandardMaterial({color: i%2? COLORS.warm : COLORS.accent, emissive: i%2? COLORS.warm:COLORS.accent, emissiveIntensity:0.4}));
+    var a = (i/10)*Math.PI*2;
+    c.userData = { baseAngle:a, radius:6+Math.sin(i)*1, baseY:2+Math.sin(i*1.7)*0.6 };
+    scene.add(c);
+    floatCubes.push(c);
+  }
+
+  // spawn monument
+  (function(){
+    var base = new THREE.Mesh(new THREE.CylinderGeometry(2.4,2.6,0.6,24), new THREE.MeshStandardMaterial({color:0x121b2e}));
+    base.position.y = 0.3; base.receiveShadow = true; scene.add(base);
+    var pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.6,4,10), new THREE.MeshStandardMaterial({color:0x18233a, emissive:COLORS.accent, emissiveIntensity:0.12}));
+    pillar.position.y = 2.6; pillar.castShadow = true; scene.add(pillar);
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(1.4,0.08,10,40), new THREE.MeshStandardMaterial({color:COLORS.accent, emissive:COLORS.accent, emissiveIntensity:0.6}));
+    ring.position.y = 5; ring.rotation.x = Math.PI/2; scene.add(ring);
+    scene.userData.homeRing = ring;
+  })();
+
+  // ---------- kiosk builder ----------
+  function makeLabelSprite(text, color){
+    var canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 128;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,512,128);
+    ctx.fillStyle = 'rgba(7,11,20,0.75)';
+    roundRect(ctx, 8,8,496,112,20); ctx.fill();
+    ctx.strokeStyle = '#'+color.toString(16).padStart(6,'0');
+    ctx.lineWidth = 3; roundRect(ctx,8,8,496,112,20); ctx.stroke();
+    ctx.fillStyle = '#EAF0FA';
+    ctx.font = '700 46px "Space Grotesk", sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, 256, 64);
+    var tex = new THREE.CanvasTexture(canvas);
+    var mat = new THREE.SpriteMaterial({ map: tex, transparent:true });
+    var sprite = new THREE.Sprite(mat);
+    sprite.scale.set(6,1.5,1);
+    return sprite;
+  }
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  }
+
+  var kiosks = [];
+  function makeKiosk(key, label, x, z, color){
+    var g = new THREE.Group();
+    var base = new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.4,0.5,20), new THREE.MeshStandardMaterial({color:0x101a2c}));
+    base.position.y = 0.25; base.receiveShadow = true; g.add(base);
+
+    var pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.55,3.6,10), new THREE.MeshStandardMaterial({color:0x141f34, emissive:color, emissiveIntensity:0.25}));
+    pillar.position.y = 2.05; pillar.castShadow = true; g.add(pillar);
+
+    var cap = new THREE.Mesh(new THREE.IcosahedronGeometry(0.6,0), new THREE.MeshStandardMaterial({color:color, emissive:color, emissiveIntensity:0.7, flatShading:true}));
+    cap.position.y = 4.1; cap.castShadow = true; g.add(cap);
+
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(1.6,0.06,8,32), new THREE.MeshStandardMaterial({color:color, emissive:color, emissiveIntensity:0.5}));
+    ring.position.y = 0.55; ring.rotation.x = Math.PI/2; g.add(ring);
+
+    var sprite = makeLabelSprite(label, color);
+    sprite.position.y = 5.4; g.add(sprite);
+
+    var light = new THREE.PointLight(color, 0.8, 12);
+    light.position.y = 3; g.add(light);
+
+    g.position.set(x,0,z);
+    g.userData = { key:key, ring:ring, cap:cap };
+    scene.add(g);
+    kiosks.push(g);
+    return g;
+  }
+
+  makeKiosk('about', 'ABOUT', 32, 32, COLORS.kiosk.about);
+  makeKiosk('skills', 'SKILLS', -32, 32, COLORS.kiosk.skills);
+  makeKiosk('projects', 'PROJECTS', -32, -32, COLORS.kiosk.projects);
+  makeKiosk('contact', 'CONTACT', 32, -32, COLORS.kiosk.contact);
+  makeKiosk('register', 'REGISTER', 0, 48, COLORS.kiosk.register);
+
+  // ---------- car ----------
+  var car = new THREE.Group();
+  var bodyMat = new THREE.MeshStandardMaterial({ color: COLORS.car, roughness:0.35, metalness:0.4, emissive:COLORS.car, emissiveIntensity:0.08 });
+  var body = new THREE.Mesh(new THREE.BoxGeometry(2.0,0.6,3.6), bodyMat);
+  body.position.y = 0.6; body.castShadow = true; car.add(body);
+  var cabin = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.55,1.8), new THREE.MeshStandardMaterial({ color:0x0c1420, roughness:0.2, metalness:0.6 }));
+  cabin.position.set(0,1.05,-0.2); cabin.castShadow = true; car.add(cabin);
+  var nose = new THREE.Mesh(new THREE.BoxGeometry(1.8,0.4,0.6), new THREE.MeshStandardMaterial({ color:COLORS.warm, emissive:COLORS.warm, emissiveIntensity:0.5 }));
+  nose.position.set(0,0.55,1.9); car.add(nose);
+
+  var wheels = [];
+  var wheelGeo = new THREE.CylinderGeometry(0.42,0.42,0.35,14);
+  [[ -1.05,0.42,1.15],[1.05,0.42,1.15],[-1.05,0.42,-1.15],[1.05,0.42,-1.15]].forEach(function(p){
+    var w = new THREE.Mesh(wheelGeo, new THREE.MeshStandardMaterial({color:0x0a0f18, roughness:0.8}));
+    w.rotation.z = Math.PI/2; w.position.set(p[0],p[1],p[2]); w.castShadow = true;
+    car.add(w); wheels.push(w);
+  });
+  var headlightGeo = new THREE.SphereGeometry(0.12,8,8);
+  [[-0.7,0.65,1.85],[0.7,0.65,1.85]].forEach(function(p){
+    var hl = new THREE.Mesh(headlightGeo, new THREE.MeshBasicMaterial({color:0xffffff}));
+    hl.position.set(p[0],p[1],p[2]); car.add(hl);
+  });
+  var headlightBeam = new THREE.SpotLight(0xffffff, 0.5, 30, Math.PI/6, 0.5);
+  headlightBeam.position.set(0,1,2); car.add(headlightBeam);
+
+  car.position.set(0,0,0);
+  scene.add(car);
+
+  // ---------- controls ----------
+  var keys = {};
+  window.addEventListener('keydown', function(e){ keys[e.key.toLowerCase()] = true; });
+  window.addEventListener('keyup', function(e){ keys[e.key.toLowerCase()] = false; });
+
+  function bindTouch(id, key){
+    var el = document.getElementById(id);
+    ['touchstart','mousedown'].forEach(function(ev){ el.addEventListener(ev, function(e){ e.preventDefault(); keys[key]=true; }); });
+    ['touchend','touchcancel','mouseup','mouseleave'].forEach(function(ev){ el.addEventListener(ev, function(e){ keys[key]=false; }); });
+  }
+  bindTouch('btn-up','w'); bindTouch('btn-down','s'); bindTouch('btn-left','a'); bindTouch('btn-right','d');
+  if('ontouchstart' in window){ document.getElementById('touchControls').classList.add('active'); }
+
+  // ---------- physics ----------
+  var speed = 0, heading = 0;
+  var MAX_SPEED = 0.62, ACCEL = 0.018, BRAKE = 0.03, FRICTION = 0.965, TURN = 0.034;
+
+  var activeKiosk = null;
+  var panel = document.getElementById('panel');
+  var panelContent = document.getElementById('panelContent');
+  var prompt = document.getElementById('prompt');
+  var panelOpenKey = null;
+
+  document.getElementById('panelClose').addEventListener('click', function(){
+    panel.classList.remove('open'); panelOpenKey = 'closed-by-user';
+  });
+
+  // REGISTER form — panel content is re-rendered on every openPanel, so
+  // delegate the submit from the container instead of binding to the form.
+  panelContent.addEventListener('submit', function(e){
+    var form = e.target;
+    if(!form || form.id !== 'regForm') return;
+    e.preventDefault();
+    var status = form.querySelector('.reg-status');
+    var btn = form.querySelector('button');
+    status.className = 'reg-status';
+    status.textContent = 'Creating your account…';
+    btn.disabled = true;
+    fetch('https://backend-bizos.onrender.com/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: form.username.value.trim(),
+        email: form.email.value.trim(),
+        password: form.password.value
+      })
+    }).then(function(res){
+      return res.json().catch(function(){ return {}; }).then(function(data){
+        if(res.ok){
+          status.className = 'reg-status ok';
+          status.textContent = data.message || 'Account created! Check your email to verify.';
+          form.reset();
+        } else {
+          status.className = 'reg-status err';
+          status.textContent = data.message || ('Registration failed (' + res.status + ')');
+        }
+      });
+    }).catch(function(){
+      status.className = 'reg-status err';
+      status.textContent = 'Network error — please try again.';
+    }).then(function(){
+      btn.disabled = false;
+    });
+  });
+
+  function openPanel(key){
+    var d = CONTENT[key];
+    if(!d) return;
+    panelContent.innerHTML = '<div class="eyebrow">'+d.eyebrow+'</div><h2>'+d.title+'</h2>'+d.html;
+    panel.classList.add('open');
+    panelOpenKey = key;
+  }
+
+  function updateCamera(){
+    var offset = new THREE.Vector3(0, 5.2, -9.5);
+    offset.applyAxisAngle(new THREE.Vector3(0,1,0), heading);
+    var targetPos = car.position.clone().add(offset);
+    camera.position.lerp(targetPos, 0.08);
+    var lookAt = car.position.clone().add(new THREE.Vector3(0,1.2,0));
+    camera.lookAt(lookAt);
+  }
+
+  function updateCompass(){
+    var inner = document.getElementById('compassInner');
+    inner.querySelectorAll('.compass-dot').forEach(function(d){ d.remove(); });
+    kiosks.forEach(function(k){
+      var rel = new THREE.Vector2(k.position.x - car.position.x, k.position.z - car.position.z);
+      var dist = rel.length();
+      var clamped = Math.min(dist, 60)/60 * 34;
+      var ang = Math.atan2(rel.x, rel.y) - heading;
+      var dot = document.createElement('div');
+      dot.className = 'compass-dot';
+      dot.style.left = (38 + Math.sin(ang)*clamped) + 'px';
+      dot.style.top = (38 - Math.cos(ang)*clamped) + 'px';
+      inner.appendChild(dot);
+    });
+  }
+
+  var clock = new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    var dt = Math.min(clock.getDelta(), 0.05) * 60;
+
+    // input
+    var accel = (keys['w'] || keys['arrowup']) ? 1 : 0;
+    var brake = (keys['s'] || keys['arrowdown']) ? 1 : 0;
+    var left = (keys['a'] || keys['arrowleft']) ? 1 : 0;
+    var right = (keys['d'] || keys['arrowright']) ? 1 : 0;
+
+    if(accel) speed += ACCEL*dt;
+    else if(brake) speed -= BRAKE*dt;
+    else speed *= Math.pow(FRICTION, dt);
+    speed = Math.max(-MAX_SPEED*0.5, Math.min(MAX_SPEED, speed));
+    if(Math.abs(speed) < 0.002) speed = 0;
+
+    var turnFactor = (speed/MAX_SPEED);
+    if(left) heading += TURN*dt*(0.4+Math.abs(turnFactor));
+    if(right) heading -= TURN*dt*(0.4+Math.abs(turnFactor));
+
+    car.rotation.y = heading;
+    car.position.x += Math.sin(heading)*speed*dt;
+    car.position.z += Math.cos(heading)*speed*dt;
+
+    var distFromCenter = Math.sqrt(car.position.x*car.position.x + car.position.z*car.position.z);
+    if(distFromCenter > WORLD_SIZE-3){
+      var ang = Math.atan2(car.position.x, car.position.z);
+      car.position.x = Math.sin(ang)*(WORLD_SIZE-3);
+      car.position.z = Math.cos(ang)*(WORLD_SIZE-3);
+      speed *= 0.3;
+    }
+
+    wheels.forEach(function(w){ w.rotation.x += speed*dt*1.4; });
+    var tilt = (left-right) * Math.min(Math.abs(speed)/MAX_SPEED,1) * 0.06;
+    body.rotation.z = THREE.MathUtils.lerp(body.rotation.z, -tilt, 0.2);
+    cabin.rotation.z = body.rotation.z;
+
+    // floating cubes
+    var t = performance.now()*0.001;
+    floatCubes.forEach(function(c,i){
+      var ud = c.userData;
+      var a = ud.baseAngle + t*0.3;
+      c.position.set(Math.cos(a)*ud.radius, ud.baseY+Math.sin(t*2+i)*0.3, Math.sin(a)*ud.radius);
+      c.rotation.x += 0.02; c.rotation.y += 0.03;
+    });
+    if(scene.userData.homeRing){ scene.userData.homeRing.rotation.z += 0.01; }
+
+    // kiosk hover animation + proximity
+    var nearest = null, nearestDist = 999;
+    kiosks.forEach(function(k){
+      k.userData.cap.rotation.y += 0.02;
+      k.userData.cap.position.y = 4.1 + Math.sin(t*2 + k.position.x)*0.15;
+      var d = car.position.distanceTo(k.position);
+      if(d < nearestDist){ nearestDist = d; nearest = k; }
+    });
+
+    if(nearest && nearestDist < 10){
+      if(nearestDist < 6){
+        if(panelOpenKey !== nearest.userData.key){ openPanel(nearest.userData.key); }
+        prompt.classList.remove('show');
+      } else {
+        prompt.classList.add('show');
+      }
+    } else {
+      prompt.classList.remove('show');
+      if(panel.classList.contains('open') && panelOpenKey !== 'closed-by-user'){
+        panel.classList.remove('open');
+        panelOpenKey = null;
+      }
+    }
+    if(nearestDist > 11 && panelOpenKey === 'closed-by-user'){ panelOpenKey = null; }
+
+    document.getElementById('speedVal').textContent = Math.round(Math.abs(speed)*140);
+
+    updateCamera();
+    updateCompass();
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener('resize', function(){
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // fake loader progress then start
+  var bar = document.getElementById('loadbar');
+  var p = 0;
+  var iv = setInterval(function(){
+    p += 8 + Math.random()*14;
+    if(p >= 100){ p = 100; clearInterval(iv);
+      bar.style.width = '100%';
+      setTimeout(function(){
+        document.getElementById('loader').style.opacity = '0';
+        setTimeout(function(){ document.getElementById('loader').style.display='none'; }, 650);
+      }, 200);
+    } else {
+      bar.style.width = p+'%';
+    }
+  }, 120);
+
+  animate();
+})();
