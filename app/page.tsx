@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 const BACKEND = "https://backend-bizos.onrender.com";
 
@@ -111,7 +110,6 @@ export default function Home() {
           >
             Already registered? Login →
           </a>
-          <Link href="/portfolio">Drive the portfolio →</Link>
         </div>
       </div>
     </main>
