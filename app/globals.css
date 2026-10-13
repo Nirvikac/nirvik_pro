@@ -162,6 +162,13 @@
    normal scrolling document — re-enable scrolling only when it's mounted. */
 body:has(.reg-page){ overflow:auto; }
 
+/* /gate page — PIN gate shown before the rest of the site is reachable */
+.gate-card{ text-align:center; }
+.gate-card .reg-form{ margin-top:20px; }
+.gate-card .reg-form input{ text-align:center; letter-spacing:.3em; font-family:'JetBrains Mono',monospace; }
+.gate-card .reg-form button{ letter-spacing:.06em; }
+.gate-card .reg-status{ text-align:center; }
+
 /* /portfolio HUD pill linking back to the register homepage */
 .hud-cta{ position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:30; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.12em; color:var(--accent); background:rgba(7,11,20,0.75); border:1px solid rgba(47,230,216,0.35); border-radius:999px; padding:8px 16px; text-decoration:none; white-space:nowrap; backdrop-filter:blur(6px); }
 .hud-cta:hover{ background:rgba(47,230,216,0.12); }
