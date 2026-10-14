@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 
 const BACKEND = "https://backend-bizos.onrender.com";
+const WEB_APP = "https://bizos-web-ms3k.onrender.com/";
 
 // Verification emails are built from the origin that handled registration —
 // this site — so /verify must exist here. It proxies the emailed token to the
@@ -65,6 +66,17 @@ function VerifyContent() {
     };
   }, [token]);
 
+  // Once verified, hand the user straight to BizOS, where their first stop is
+  // the business-details form (they have no business yet). A short pause lets
+  // them read the confirmation; the button below skips the wait.
+  useEffect(() => {
+    if (status !== "success") return;
+    const timer = setTimeout(() => {
+      window.location.href = WEB_APP;
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [status]);
+
   return (
     <main className="reg-page">
       <div className="reg-card">
@@ -78,19 +90,18 @@ function VerifyContent() {
           {status === "verifying" &&
             "Hang tight — this only takes a moment."}
           {status === "success" &&
-            "Your email has been verified. You can now log in to BizOS."}
+            "Your email is verified. Continue to BizOS to set up your business details, then start selling."}
           {status === "error" && message}
         </p>
 
         {status !== "verifying" && (
           <div className="reg-links">
-            <a
-              href="https://bizos-web-ms3k.onrender.com/"
-              target="_blank"
-              rel="noopener"
-            >
-              Go to Login →
-            </a>
+            {status === "success" && (
+              <a href={WEB_APP}>Continue to BizOS →</a>
+            )}
+            {status === "error" && (
+              <a href={WEB_APP}>Go to Login →</a>
+            )}
             <a href="/">Back to register</a>
           </div>
         )}
